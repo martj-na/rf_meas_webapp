@@ -1,0 +1,7 @@
+/rf_meas_webapp:
+  ros__parameters:
+    dua:
+      params_file_path: '/home/neo/workspace/src/rf_meas_webapp/rf_meas_webapp/params.yaml'
+
+    autostart: true
+    verbose: true

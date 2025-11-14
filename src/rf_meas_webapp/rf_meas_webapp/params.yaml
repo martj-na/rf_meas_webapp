@@ -1,0 +1,17 @@
+params:
+
+  autostart:
+    type: bool
+    default_value: false
+    description: "Autostart the AMQP bridge when the node is launched."
+    constraints: "Cannot be changed."
+    read_only: true
+    var_name: _autostart
+
+  verbose:
+    type: bool
+    default_value: true
+    description: "Enable verbose logging for debugging purposes."
+    constraints: "Cannot be changed."
+    read_only: true
+    var_name: _verbose
