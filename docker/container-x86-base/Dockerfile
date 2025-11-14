@@ -27,8 +27,14 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 # IMAGE SETUP START #
 # rf_meas_webapp START #
-RUN pip3 install --no-cache-dir websockets flask flask-sock pyngrok flask-ngrok
-RUN ngrok config add-authtoken 2TONmitpC3gXDIN7boGDHGx79Up_6muSzDm57zCjygqVE8PaQ
+RUN . /opt/dua-venv/bin/activate && \
+  pip install --no-cache-dir \
+    flask \
+    flask-ngrok \
+    flask-sock \
+    pyngrok \
+    websockets && \
+  ngrok config add-authtoken 2TONmitpC3gXDIN7boGDHGx79Up_6muSzDm57zCjygqVE8PaQ
 # rf_meas_webapp END #
 # IMAGE SETUP END #
 
