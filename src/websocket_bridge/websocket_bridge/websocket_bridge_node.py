@@ -36,45 +36,45 @@ class WebSocketBridgeNode(NodeBase):
     def init_atomics(self):
         self._running = AtomicBool(initial=False)
 
-    def init_subscribers(self):
-        """
-        Create subscribers to all topics listed in parameters:
+    def init_subscribers(self) -> None:
+    """
+    Create subscribers to all topics listed in self._topics.
 
-        parameters:
-            topics:
-              - topic: /zero_span
-                type: rf_meas_manager_interfaces/msg/ZeroSpan
-              - topic: /channel_power
-                type: rf_meas_manager_interfaces/msg/ChannelPower
-        """
+    self._topics es: [
+        "/zero_span rf_meas_manager_interfaces/msg/ZeroSpan",
+        "/channel_power rf_meas_manager_interfaces/msg/ChannelPower",
+        "/status std_msgs/msg/String",
+    ]
+    """
+    self._topic_list = []
 
-        self._topic_list = []
+    topics_raw = getattr(self, "_topics", [])
+    if not topics_raw:
+        self.get_logger().warn("No topics configured for WebSocket bridge")
+        return
 
+    for entry in topics_raw:
         try:
-            topic_cfg = self._topics  # preso dal params.yaml
-        except AttributeError:
-            self.get_logger().warn("No topics configured for WebSocket bridge")
-            return
+            topic_name, msg_type_str = entry.split(" ", 1)
 
-        for t in topic_cfg:
-            topic_name = t["topic"]
-            msg_type_str = t["type"]
-
-            # importa automaticamente il tipo ROS2
             pkg, _, msg = msg_type_str.partition("/msg/")
             module = __import__(f"{pkg}.msg", fromlist=[msg])
             msg_cls = getattr(module, msg)
 
-            self.get_logger().info(f"[WS BRIDGE] Subscribing to {topic_name} ({msg_type_str})")
+            self.get_logger().info(
+                f"[WS BRIDGE] Subscribing to {topic_name} ({msg_type_str})"
+            )
 
             self.dua_create_subscription(
                 msg_cls,
                 topic_name,
-                self.generic_callback
+                self.generic_callback,
             )
 
             self._topic_list.append(topic_name)
 
+        except Exception as e:
+            self.get_logger().error(f"Error parsing topic entry '{entry}': {e}")
     def init_service_servers(self):
         self.enable_server = self.dua_create_service_server(
             SetBool,

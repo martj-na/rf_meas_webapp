@@ -1,21 +1,24 @@
 /websocket_bridge:
   ros__parameters:
+
     dua:
-      params_file_path: '/home/neo/workspace/src/websocket_bridge/websocket_bridge/params.yaml'
+      params_file_path: "/home/neo/workspace/src/websocket_bridge/websocket_bridge/params.yaml"
 
     autostart: true
-    verbose: true
+    verbose: false
 
-    # ================
-    #  WebSocket server
-    # ================
+    # ======================
+    # WebSocket server
+    # ======================
     server:
-      host: "127.0.0.1"
+      host: "0.0.0.0"
       port: 5000
       max_connections: 10
 
-    # ================
-    #   ROS ↔ WebSocket Routing
-    # ================
-    ros2wstopics:
-      - /channel_power
+    # ======================
+    # Topic → WebSocket
+    # ======================
+    topics:
+      - "/zero_span rf_meas_manager_interfaces/msg/ZeroSpan"
+      - "/channel_power rf_meas_manager_interfaces/msg/ChannelPower"
+      - "/status std_msgs/msg/String"

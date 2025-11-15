@@ -1,0 +1,44 @@
+params:
+
+  autostart:
+    type: bool
+    default_value: true
+    read_only: true
+    var_name: _autostart
+
+  verbose:
+    type: bool
+    default_value: false
+    read_only: true
+    var_name: _verbose
+
+  server.host:
+    type: string
+    default_value: "0.0.0.0"
+    read_only: true
+    var_name: _server_host
+
+  server.port:
+    type: integer
+    default_value: 5000
+    min_value: 1
+    max_value: 65535
+    step: 1
+    read_only: true
+    var_name: _server_port
+
+  server.max_connections:
+    type: integer
+    default_value: 10
+    min_value: 1
+    max_value: 1000
+    step: 1
+    read_only: true
+    var_name: _server_max_connections
+
+  topics:
+    type: string_array
+    default_value: []
+    description: "List of 'topic type' pairs: '<topic> <pkg/msg/Type>'"
+    read_only: true
+    var_name: _topics
